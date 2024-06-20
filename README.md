@@ -12,8 +12,8 @@ With the optimize flag 92% performance increased.
 ```mermaid
 flowchart LR;
   UI["User Interface"]
-  FR["Front End"]
-  BA["Back End"]
+  FR["Front End (Transpiler)"]
+  BA["Back End (V Compiler)"]
 
   UI --> FR;
   FR --> BA;
