@@ -25,7 +25,7 @@ import flag
 import frontend
 import backend
 
-const optimize_flag = '-prod -ccflag -Ofast' // Use -Ofast on clang
+const optimize_flag = '-prod' // Use -cflags -Ofast on clang
 
 fn main() {
 	mut fp := flag.new_flag_parser(os.args)
