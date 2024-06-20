@@ -9,7 +9,7 @@ With the optimize flag 92% performance increased.
 | 1.073     | -t -O -i test/mandel.bf |
 
 # How to install?
-First make sure that you have [V compiler](vlang.io) installed
+First make sure that you have [V compiler](https://www.vlang.io) installed
 
 ```
 git clone https://github.com/Jeremy-JYL/bc.git
