@@ -10,5 +10,5 @@ With the optimize flag 92% performance increased.
 
 # How it work?
 ```
-  User Interface -> Front End (Transpiler) -> Back End (V Compiler)
+  User Interface -> Front End (Transpiler) -> Back End (V Compiler);
 ```
