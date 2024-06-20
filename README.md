@@ -10,7 +10,12 @@ With the optimize flag 92% performance increased.
 
 # How it work?
 ```mermaid
-graph TD;
-  "User Interface"-->"Front End (Transpiler)";
-  "Front End (Transpiler)"-->"Back End (V Compiler)";
+flowchart LR;
+  UI["User Interface"]
+  FR["Front End"]
+  BA["Back End"]
+
+  UI --> FR;
+  FR --> BA;
+
 ```
