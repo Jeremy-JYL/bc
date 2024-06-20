@@ -9,6 +9,7 @@ With the optimize flag 92% performance increased.
 | 1.073     | -t -O -i test/mandel.bf |
 
 # How it work?
-```
+```mermaid
+graph TD;
   User Interface -> Front End (Transpiler) -> Back End (V Compiler);
 ```
