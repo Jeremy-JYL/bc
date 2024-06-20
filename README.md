@@ -16,6 +16,27 @@ git clone https://github.com/Jeremy-JYL/bc.git
 v -prod .
 ```
 
+# Usage
+```
+BC v0.0.1
+-----------------------------------------------
+Usage: BC [options] [ARGS]
+
+Description: Brainfuck Compiler / Transpiler
+
+Options:
+  --size <int>              Tape Size
+  --type <string>           Tape Type
+  -t, --translate           New Line Translation
+  --vflags <string>         V Compiler Flags
+  --emitv                   Emit V File
+  -O, --optimize            Enable optimize
+  -i, --input <string>      File In
+  -o, --output <string>     File Out
+  -h, --help                display this help and exit
+  --version                 output version information and exit
+```
+
 # How it work?
 ```mermaid
 flowchart LR;
