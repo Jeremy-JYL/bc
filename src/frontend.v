@@ -21,26 +21,74 @@ module frontend
 
 pub fn transpiler(source string, tape_size i64, tape_type string, translate bool) []string {
 	mut result := []string{}
-	code := source.split('')
+	mut pc := 0
+	mut code := source.split('')
+	code << 'EOF'
 
 	// Init
 	result << 'fn main() {'
 	result << 'mut tape := [${tape_size}]${tape_type}{}'
 	result << 'mut counter := 0'
 
-	for i in code {
-		match i {
+	mut ch := ''
+	mut ch_counter := 0
+	for {
+		match code[pc] {
 			'+' {
-				result << 'tape[counter]++'
+				ch = code[pc]
+				for i in code[pc..code.len] {
+					if i != ch {
+						break
+					} else {
+						ch_counter++
+						pc++
+					}
+				}
+				pc--
+				result << 'tape[counter] += ${ch_counter}'
+				ch_counter = 0
 			}
 			'-' {
-				result << 'tape[counter]--'
+				ch = code[pc]
+				for i in code[pc..code.len] {
+					if i != ch {
+						break
+					} else {
+						ch_counter++
+						pc++
+					}
+				}
+				pc--
+				result << 'tape[counter] -= ${ch_counter}'
+				ch_counter = 0
 			}
 			'>' {
-				result << 'counter++'
+				ch = code[pc]
+				for i in code[pc..code.len] {
+					if i != ch {
+						break
+					} else {
+						ch_counter++
+						pc++
+					}
+				}
+				pc--
+				result << 'counter += ${ch_counter}'
+				ch_counter = 0
 			}
 			'<' {
-				result << 'counter--'
+				ch = code[pc]
+				for i in code[pc..code.len] {
+					if i != ch {
+						break
+					} else {
+						ch_counter++
+						pc++
+					}
+				}
+				pc--
+				result << 'counter -= ${ch_counter}'
+				ch_counter = 0
 			}
 			'[' {
 				result << 'for tape[counter] != 0 {'
@@ -58,8 +106,12 @@ pub fn transpiler(source string, tape_size i64, tape_type string, translate bool
 					result << 'print(tape[counter])'
 				}
 			}
+			'EOF' {
+				break
+			}
 			else {}
 		}
+		pc++
 	}
 
 	// EOF

@@ -1,12 +1,21 @@
 # BC (A Brainfuck Compiler / Transpiler)
 This is a fast Compiler / Transpiler power by V.
-With the optimize flag 92% performance increased.
+This Compiler have the optimize by default in the frontend // v0.0.2
 
 # Mandel benchmark
+## v0.0.2
+| Speed (S) | Flags                   |
+|-----------|-------------------------|
+| 7.043     | -i test/mandel.bf       |
+| 1.073     | -O -i test/mandel.bf    |
+
+## v0.0.1
 | Speed (S) | Flags                   |
 |-----------|-------------------------|
 | 13.860    | -t -i test/mandel.bf    |
 | 1.073     | -t -O -i test/mandel.bf |
+
+Note: Those result was test on my MacBook Air with M2 Chip 8G Ram with the time util
 
 # How to install?
 First make sure that you have [V compiler](https://www.vlang.io) installed
@@ -27,7 +36,7 @@ Description: Brainfuck Compiler / Transpiler
 Options:
   --size <int>              Tape Size
   --type <string>           Tape Type
-  -t, --translate           New Line Translation
+  -t, --translate           New Line Translation (Off)
   --vflags <string>         V Compiler Flags
   --emitv                   Emit V File
   -O, --optimize            Enable optimize

@@ -35,9 +35,9 @@ fn main() {
 	fp.skip_executable()
 
 	tape_size := fp.int('size', 0, 8192, 'Tape Size')
-	tape_type := fp.string('type', 0, 'int', 'Tape Type')
+	tape_type := fp.string('type', 0, 'u8', 'Tape Type')
 
-	translate := fp.bool('translate', `t`, false, 'New Line Translation')
+	translate := fp.bool('translate', `t`, true, 'New Line Translation (Off)')
 	mut vcf := fp.string('vflags', 0, '', 'V Compiler Flags')
 	emit_v := fp.bool('emitv', 0, false, 'Emit V File')
 	optimize := fp.bool('optimize', `O`, false, 'Enable optimize')
