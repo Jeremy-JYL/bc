@@ -1,7 +1,7 @@
 # BC (A Brainfuck Compiler / Transpiler)
 This is a fast Compiler / Transpiler power by V.
 
-This Compiler have the optimize by default in the frontend // v0.0.2
+This Compiler have the optimize by default in the frontend // >v0.0.2
 
 # Mandel benchmark
 ## v0.0.3 (C backend)
