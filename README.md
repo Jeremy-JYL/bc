@@ -4,13 +4,19 @@ This is a fast Compiler / Transpiler power by V.
 This Compiler have the optimize by default in the frontend // v0.0.2
 
 # Mandel benchmark
-## v0.0.2
+## v0.0.3 (C backend)
+| Speed (S) | Flags                                  |
+|-----------|----------------------------------------|
+| 1.448     | -b c -i test/mandel.bf                 |
+| 0.638     | -b c -O -i test/mandel.bf              |
+
+## v0.0.2 & v0.0.3 (V backend)
 | Speed (S) | Flags                   |
 |-----------|-------------------------|
 | 7.043     | -i test/mandel.bf       |
 | 1.073     | -O -i test/mandel.bf    |
 
-## v0.0.1
+## v0.0.1 (V backend)
 | Speed (S) | Flags                   |
 |-----------|-------------------------|
 | 13.860    | -t -i test/mandel.bf    |
@@ -28,17 +34,17 @@ v -prod .
 
 # Usage
 ```
-BC v0.0.1
+BC v0.0.3
 -----------------------------------------------
 Usage: BC [options] [ARGS]
 
 Description: Brainfuck Compiler / Transpiler
 
 Options:
+  -b, --backend <string>    Backend (V, C)
   --size <int>              Tape Size
-  --type <string>           Tape Type
   -t, --translate           New Line Translation (Off)
-  --emitv                   Emit V File
+  -k, --keep                Keep
   -O, --optimize            Enable optimize
   -i, --input <string>      File In
   -o, --output <string>     File Out

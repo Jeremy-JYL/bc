@@ -19,103 +19,198 @@ You should have received a copy of the GNU General Public License along with bc 
 
 module frontend
 
-pub fn transpiler(source string, tape_size i64, tape_type string, translate bool) []string {
+pub fn transpiler(source string, tape_size i64, translate bool, mode string) []string {
 	mut result := []string{}
 	mut pc := 0
 	mut code := source.split('')
 	code << 'EOF'
 
-	// Init
-	result << 'fn main() {'
-	result << 'mut tape := [${tape_size}]${tape_type}{}'
-	result << 'mut counter := 0'
+	if mode == 'v' {
+		// Init
+		result << 'fn main() {'
+		result << 'mut tape := [${tape_size}]int{}'
+		result << 'mut counter := 0'
 
-	mut ch := ''
-	mut ch_counter := 0
-	for {
-		match code[pc] {
-			'+' {
-				ch = code[pc]
-				for i in code[pc..code.len] {
-					if i != ch {
-						break
+		mut ch := ''
+		mut ch_counter := 0
+		for {
+			match code[pc] {
+				'+' {
+					ch = code[pc]
+					for i in code[pc..code.len] {
+						if i != ch {
+							break
+						} else {
+							ch_counter++
+							pc++
+						}
+					}
+					pc--
+					result << 'tape[counter] += ${ch_counter}'
+					ch_counter = 0
+				}
+				'-' {
+					ch = code[pc]
+					for i in code[pc..code.len] {
+						if i != ch {
+							break
+						} else {
+							ch_counter++
+							pc++
+						}
+					}
+					pc--
+					result << 'tape[counter] -= ${ch_counter}'
+					ch_counter = 0
+				}
+				'>' {
+					ch = code[pc]
+					for i in code[pc..code.len] {
+						if i != ch {
+							break
+						} else {
+							ch_counter++
+							pc++
+						}
+					}
+					pc--
+					result << 'counter += ${ch_counter}'
+					ch_counter = 0
+				}
+				'<' {
+					ch = code[pc]
+					for i in code[pc..code.len] {
+						if i != ch {
+							break
+						} else {
+							ch_counter++
+							pc++
+						}
+					}
+					pc--
+					result << 'counter -= ${ch_counter}'
+					ch_counter = 0
+				}
+				'[' {
+					result << 'for tape[counter] != 0 {'
+				}
+				']' {
+					result << '}'
+				}
+				',' {
+					result << 'tape[counter] = input_character()'
+				}
+				'.' {
+					if translate {
+						result << 'print(rune(tape[counter]))'
 					} else {
-						ch_counter++
-						pc++
+						result << 'print(tape[counter])'
 					}
 				}
-				pc--
-				result << 'tape[counter] += ${ch_counter}'
-				ch_counter = 0
-			}
-			'-' {
-				ch = code[pc]
-				for i in code[pc..code.len] {
-					if i != ch {
-						break
-					} else {
-						ch_counter++
-						pc++
-					}
+				'EOF' {
+					break
 				}
-				pc--
-				result << 'tape[counter] -= ${ch_counter}'
-				ch_counter = 0
+				else {}
 			}
-			'>' {
-				ch = code[pc]
-				for i in code[pc..code.len] {
-					if i != ch {
-						break
-					} else {
-						ch_counter++
-						pc++
-					}
-				}
-				pc--
-				result << 'counter += ${ch_counter}'
-				ch_counter = 0
-			}
-			'<' {
-				ch = code[pc]
-				for i in code[pc..code.len] {
-					if i != ch {
-						break
-					} else {
-						ch_counter++
-						pc++
-					}
-				}
-				pc--
-				result << 'counter -= ${ch_counter}'
-				ch_counter = 0
-			}
-			'[' {
-				result << 'for tape[counter] != 0 {'
-			}
-			']' {
-				result << '}'
-			}
-			',' {
-				result << 'tape[counter] = input_character()'
-			}
-			'.' {
-				if translate {
-					result << 'print(rune(tape[counter]))'
-				} else {
-					result << 'print(tape[counter])'
-				}
-			}
-			'EOF' {
-				break
-			}
-			else {}
+			pc++
 		}
-		pc++
-	}
 
-	// EOF
-	result << '}'
+		// EOF
+		result << '}'
+	} else if mode == 'c' {
+		// Init
+		result << '#include <stdio.h>'
+		result << 'int main() {'
+		result << 'int tape[${tape_size}];'
+		result << 'int counter = 0;'
+
+		mut ch := ''
+		mut ch_counter := 0
+		for {
+			match code[pc] {
+				'+' {
+					ch = code[pc]
+					for i in code[pc..code.len] {
+						if i != ch {
+							break
+						} else {
+							ch_counter++
+							pc++
+						}
+					}
+					pc--
+					result << 'tape[counter] += ${ch_counter};'
+					ch_counter = 0
+				}
+				'-' {
+					ch = code[pc]
+					for i in code[pc..code.len] {
+						if i != ch {
+							break
+						} else {
+							ch_counter++
+							pc++
+						}
+					}
+					pc--
+					result << 'tape[counter] -= ${ch_counter};'
+					ch_counter = 0
+				}
+				'>' {
+					ch = code[pc]
+					for i in code[pc..code.len] {
+						if i != ch {
+							break
+						} else {
+							ch_counter++
+							pc++
+						}
+					}
+					pc--
+					result << 'counter += ${ch_counter};'
+					ch_counter = 0
+				}
+				'<' {
+					ch = code[pc]
+					for i in code[pc..code.len] {
+						if i != ch {
+							break
+						} else {
+							ch_counter++
+							pc++
+						}
+					}
+					pc--
+					result << 'counter -= ${ch_counter};'
+					ch_counter = 0
+				}
+				'[' {
+					result << 'while (tape[counter] != 0) {'
+				}
+				']' {
+					result << '}'
+				}
+				',' {
+					result << 'tape[counter] = getchar();'
+				}
+				'.' {
+					if translate {
+						result << 'putchar(tape[counter]);'
+					} else {
+						result << 'printf(tape[counter]);'
+					}
+				}
+				'EOF' {
+					break
+				}
+				else {}
+			}
+			pc++
+		}
+
+		// EOF
+		result << '}'
+	}
 
 	return result
 }

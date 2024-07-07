@@ -25,24 +25,23 @@ import flag
 import frontend
 import backend
 
-const optimize_flag = '-prod' // Use -cflags -Ofast on clang
-
 fn main() {
 	mut fp := flag.new_flag_parser(os.args)
 	fp.application('BC')
-	fp.version('v0.0.1')
+	fp.version('v0.0.3')
 	fp.description('Brainfuck Compiler / Transpiler')
 	fp.skip_executable()
 
+	mode := fp.string('backend', `b`, 'v', 'Backend (V, C)')
+
 	tape_size := fp.int('size', 0, 8192, 'Tape Size')
-	tape_type := fp.string('type', 0, 'int', 'Tape Type')
 
 	translate := fp.bool('translate', `t`, true, 'New Line Translation (Off)')
-	emit_v := fp.bool('emitv', 0, false, 'Emit V File')
+	keep := fp.bool('keep', `k`, false, 'Keep')
 	optimize := fp.bool('optimize', `O`, false, 'Enable optimize')
 
 	file := fp.string('input', `i`, '', 'File In')
-	output := fp.string('output', `o`, os.file_name(file).split('.')[0], 'File Out') + '.v'
+	output := fp.string('output', `o`, os.file_name(file).split('.')[0], 'File Out')
 
 	fp.finalize() or {
 		eprintln(err)
@@ -50,22 +49,29 @@ fn main() {
 		exit(1)
 	}
 
+	oflags := {
+		'v': '-prod' // Use -cflags -Ofast on clang
+		'c': '-O'
+	}
+
+	optimize_flag := oflags[mode]
+
 	code := os.read_file(file) or {
 		println(fp.usage())
 		exit(1)
 	}
 
-	result := frontend.transpiler(code, tape_size, tape_type, translate)
+	result := frontend.transpiler(code, tape_size, translate, mode)
 
-	os.write_lines(output, result) or { exit(1) }
+	os.write_lines(output + '.${mode}', result) or { exit(1) }
 
 	if optimize {
-		backend.compiler(output, optimize_flag)
+		backend.compiler(output, optimize_flag, mode)
 	} else {
-		backend.compiler(output, '')
+		backend.compiler(output, '', mode)
 	}
 
-	if !emit_v {
-		os.rm(output) or { exit(1) }
+	if !keep {
+		os.rm(output + '.${mode}') or { exit(1) }
 	}
 }

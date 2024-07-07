@@ -21,6 +21,10 @@ module backend
 
 import os
 
-pub fn compiler(source string, vcf string) {
-	os.execute('v ${vcf} ./${source}')
+pub fn compiler(source string, flags string, mode string) {
+	if mode == 'v' {
+		os.execute('v ${flags} ./${source + '.v'}')
+	} else if mode == 'c' {
+		os.execute('cc ${flags} ${source + '.c'} -o ${source}')
+	}
 }
