@@ -50,10 +50,6 @@ fn main() {
 		exit(1)
 	}
 
-	if optimize {
-		vcf += ' ' + optimize_flag
-	}
-
 	code := os.read_file(file) or {
 		println(fp.usage())
 		exit(1)
@@ -63,7 +59,11 @@ fn main() {
 
 	os.write_lines(output, result) or { exit(1) }
 
-	backend.compiler(output, vcf)
+	if optimize {
+		backend.compiler(output, optimize_flag)
+	} else {
+		backend.compiler(output, '')
+	}
 
 	if !emit_v {
 		os.rm(output) or { exit(1) }
