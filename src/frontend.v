@@ -25,191 +25,197 @@ pub fn transpiler(source string, tape_size i64, translate bool, mode string) []s
 	mut code := source.split('')
 	code << 'EOF'
 
-	if mode == 'v' {
-		// Init
-		result << 'fn main() {'
-		result << 'mut tape := [${tape_size}]int{}'
-		result << 'mut counter := 0'
+	match mode {
+		'v' {
+			// Init
+			result << 'fn main() {'
+			result << 'mut tape := [${tape_size}]int{}'
+			result << 'mut counter := 0'
 
-		mut ch := ''
-		mut ch_counter := 0
-		for {
-			match code[pc] {
-				'+' {
-					ch = code[pc]
-					for i in code[pc..code.len] {
-						if i != ch {
-							break
+			mut ch := ''
+			mut ch_counter := 0
+			for {
+				match code[pc] {
+					'+' {
+						ch = code[pc]
+						for i in code[pc..code.len] {
+							if i != ch {
+								break
+							} else {
+								ch_counter++
+								pc++
+							}
+						}
+						pc--
+						result << 'tape[counter] += ${ch_counter}'
+						ch_counter = 0
+					}
+					'-' {
+						ch = code[pc]
+						for i in code[pc..code.len] {
+							if i != ch {
+								break
+							} else {
+								ch_counter++
+								pc++
+							}
+						}
+						pc--
+						result << 'tape[counter] -= ${ch_counter}'
+						ch_counter = 0
+					}
+					'>' {
+						ch = code[pc]
+						for i in code[pc..code.len] {
+							if i != ch {
+								break
+							} else {
+								ch_counter++
+								pc++
+							}
+						}
+						pc--
+						result << 'counter += ${ch_counter}'
+						ch_counter = 0
+					}
+					'<' {
+						ch = code[pc]
+						for i in code[pc..code.len] {
+							if i != ch {
+								break
+							} else {
+								ch_counter++
+								pc++
+							}
+						}
+						pc--
+						result << 'counter -= ${ch_counter}'
+						ch_counter = 0
+					}
+					'[' {
+						result << 'for tape[counter] != 0 {'
+					}
+					']' {
+						result << '}'
+					}
+					',' {
+						result << 'tape[counter] = input_character()'
+					}
+					'.' {
+						if translate {
+							result << 'print(rune(tape[counter]))'
 						} else {
-							ch_counter++
-							pc++
+							result << 'print(tape[counter])'
 						}
 					}
-					pc--
-					result << 'tape[counter] += ${ch_counter}'
-					ch_counter = 0
-				}
-				'-' {
-					ch = code[pc]
-					for i in code[pc..code.len] {
-						if i != ch {
-							break
-						} else {
-							ch_counter++
-							pc++
-						}
+					'EOF' {
+						break
 					}
-					pc--
-					result << 'tape[counter] -= ${ch_counter}'
-					ch_counter = 0
+					else {}
 				}
-				'>' {
-					ch = code[pc]
-					for i in code[pc..code.len] {
-						if i != ch {
-							break
-						} else {
-							ch_counter++
-							pc++
-						}
-					}
-					pc--
-					result << 'counter += ${ch_counter}'
-					ch_counter = 0
-				}
-				'<' {
-					ch = code[pc]
-					for i in code[pc..code.len] {
-						if i != ch {
-							break
-						} else {
-							ch_counter++
-							pc++
-						}
-					}
-					pc--
-					result << 'counter -= ${ch_counter}'
-					ch_counter = 0
-				}
-				'[' {
-					result << 'for tape[counter] != 0 {'
-				}
-				']' {
-					result << '}'
-				}
-				',' {
-					result << 'tape[counter] = input_character()'
-				}
-				'.' {
-					if translate {
-						result << 'print(rune(tape[counter]))'
-					} else {
-						result << 'print(tape[counter])'
-					}
-				}
-				'EOF' {
-					break
-				}
-				else {}
+				pc++
 			}
-			pc++
+
+			// EOF
+			result << '}'
 		}
+		'c' {
+			// Init
+			result << '#include <stdio.h>'
+			result << 'int main() {'
+			result << 'int tape[${tape_size}];'
+			result << 'int counter = 0;'
 
-		// EOF
-		result << '}'
-	} else if mode == 'c' {
-		// Init
-		result << '#include <stdio.h>'
-		result << 'int main() {'
-		result << 'int tape[${tape_size}];'
-		result << 'int counter = 0;'
-
-		mut ch := ''
-		mut ch_counter := 0
-		for {
-			match code[pc] {
-				'+' {
-					ch = code[pc]
-					for i in code[pc..code.len] {
-						if i != ch {
-							break
+			mut ch := ''
+			mut ch_counter := 0
+			for {
+				match code[pc] {
+					'+' {
+						ch = code[pc]
+						for i in code[pc..code.len] {
+							if i != ch {
+								break
+							} else {
+								ch_counter++
+								pc++
+							}
+						}
+						pc--
+						result << 'tape[counter] += ${ch_counter};'
+						ch_counter = 0
+					}
+					'-' {
+						ch = code[pc]
+						for i in code[pc..code.len] {
+							if i != ch {
+								break
+							} else {
+								ch_counter++
+								pc++
+							}
+						}
+						pc--
+						result << 'tape[counter] -= ${ch_counter};'
+						ch_counter = 0
+					}
+					'>' {
+						ch = code[pc]
+						for i in code[pc..code.len] {
+							if i != ch {
+								break
+							} else {
+								ch_counter++
+								pc++
+							}
+						}
+						pc--
+						result << 'counter += ${ch_counter};'
+						ch_counter = 0
+					}
+					'<' {
+						ch = code[pc]
+						for i in code[pc..code.len] {
+							if i != ch {
+								break
+							} else {
+								ch_counter++
+								pc++
+							}
+						}
+						pc--
+						result << 'counter -= ${ch_counter};'
+						ch_counter = 0
+					}
+					'[' {
+						result << 'while (tape[counter] != 0) {'
+					}
+					']' {
+						result << '}'
+					}
+					',' {
+						result << 'tape[counter] = getchar();'
+					}
+					'.' {
+						if translate {
+							result << 'putchar(tape[counter]);'
 						} else {
-							ch_counter++
-							pc++
+							result << 'printf(tape[counter]);'
 						}
 					}
-					pc--
-					result << 'tape[counter] += ${ch_counter};'
-					ch_counter = 0
-				}
-				'-' {
-					ch = code[pc]
-					for i in code[pc..code.len] {
-						if i != ch {
-							break
-						} else {
-							ch_counter++
-							pc++
-						}
+					'EOF' {
+						break
 					}
-					pc--
-					result << 'tape[counter] -= ${ch_counter};'
-					ch_counter = 0
+					else {}
 				}
-				'>' {
-					ch = code[pc]
-					for i in code[pc..code.len] {
-						if i != ch {
-							break
-						} else {
-							ch_counter++
-							pc++
-						}
-					}
-					pc--
-					result << 'counter += ${ch_counter};'
-					ch_counter = 0
-				}
-				'<' {
-					ch = code[pc]
-					for i in code[pc..code.len] {
-						if i != ch {
-							break
-						} else {
-							ch_counter++
-							pc++
-						}
-					}
-					pc--
-					result << 'counter -= ${ch_counter};'
-					ch_counter = 0
-				}
-				'[' {
-					result << 'while (tape[counter] != 0) {'
-				}
-				']' {
-					result << '}'
-				}
-				',' {
-					result << 'tape[counter] = getchar();'
-				}
-				'.' {
-					if translate {
-						result << 'putchar(tape[counter]);'
-					} else {
-						result << 'printf(tape[counter]);'
-					}
-				}
-				'EOF' {
-					break
-				}
-				else {}
+				pc++
 			}
-			pc++
-		}
 
-		// EOF
-		result << '}'
+			// EOF
+			result << '}'
+		}
+		else {
+		  panic("Unknown backend!")
+		}
 	}
 
 	return result
