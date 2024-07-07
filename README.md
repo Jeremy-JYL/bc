@@ -37,7 +37,6 @@ Options:
   --size <int>              Tape Size
   --type <string>           Tape Type
   -t, --translate           New Line Translation (Off)
-  --vflags <string>         V Compiler Flags
   --emitv                   Emit V File
   -O, --optimize            Enable optimize
   -i, --input <string>      File In
