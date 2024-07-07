@@ -22,5 +22,5 @@ module backend
 import os
 
 pub fn compiler(source string, vcf string) {
-	println(os.execute('v ${vcf} ./${source}'))
+	os.execute('v ${vcf} ./${source}')
 }
