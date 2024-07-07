@@ -57,3 +57,6 @@ flowchart LR;
   FR --> BA;
 
 ```
+
+# Note
+Recommend clang user use the cflag -Ofast to boost more performance // Look at the comment at `src/main.v`
