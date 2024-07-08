@@ -55,7 +55,6 @@ Description: Brainfuck Compiler / Transpiler
 Options:
   -b, --backend <string>    Backend (V, C)
   --size <int>              Tape Size
-  -t, --translate           New Line Translation (Off)
   -k, --keep                Keep
   -O, --optimize            Enable optimize
   -i, --input <string>      File In
@@ -77,6 +76,4 @@ flowchart LR;
 ```
 
 # Note
-Recommend clang user use the cflag -Ofast to boost more performance // Look at the comment at `src/main.v`
-
 Everyone are wellcome to add new backend and optimize!

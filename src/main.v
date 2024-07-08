@@ -49,7 +49,7 @@ fn main() {
 	}
 
 	oflags := {
-		'v': '-prod' // Use -cflags -Ofast on clang
+		'v': '-prod'
 		'c': '-O'
 	}
 
