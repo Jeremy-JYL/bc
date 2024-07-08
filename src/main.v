@@ -28,7 +28,7 @@ import backend
 fn main() {
 	mut fp := flag.new_flag_parser(os.args)
 	fp.application('BC')
-	fp.version('v0.0.3')
+	fp.version('v0.0.4')
 	fp.description('Brainfuck Compiler / Transpiler')
 	fp.skip_executable()
 
@@ -36,7 +36,6 @@ fn main() {
 
 	tape_size := fp.int('size', 0, 8192, 'Tape Size')
 
-	translate := fp.bool('translate', `t`, true, 'New Line Translation (Off)')
 	keep := fp.bool('keep', `k`, false, 'Keep')
 	optimize := fp.bool('optimize', `O`, false, 'Enable optimize')
 
@@ -61,7 +60,7 @@ fn main() {
 		exit(1)
 	}
 
-	result := frontend.transpiler(code, tape_size, translate, mode)
+	result := frontend.transpiler(code, tape_size, mode)
 
 	os.write_lines(output + '.${mode}', result) or { exit(1) }
 

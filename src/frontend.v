@@ -19,7 +19,7 @@ You should have received a copy of the GNU General Public License along with bc 
 
 module frontend
 
-pub fn transpiler(source string, tape_size i64, translate bool, mode string) []string {
+pub fn transpiler(source string, tape_size i64, mode string) []string {
 	mut result := []string{}
 	mut pc := 0
 	mut code := source.split('')
@@ -93,7 +93,12 @@ pub fn transpiler(source string, tape_size i64, translate bool, mode string) []s
 						ch_counter = 0
 					}
 					'[' {
-						result << 'for tape[counter] != 0 {'
+						if code[pc + 1] == '-' && code[pc + 2] == ']' {
+							result << 'tape[counter] = 0'
+							pc += 2
+						} else {
+							result << 'for tape[counter] != 0 {'
+						}
 					}
 					']' {
 						result << '}'
@@ -102,11 +107,7 @@ pub fn transpiler(source string, tape_size i64, translate bool, mode string) []s
 						result << 'tape[counter] = input_character()'
 					}
 					'.' {
-						if translate {
-							result << 'print(rune(tape[counter]))'
-						} else {
-							result << 'print(tape[counter])'
-						}
+						result << 'print(rune(tape[counter]))'
 					}
 					'EOF' {
 						break
@@ -187,7 +188,12 @@ pub fn transpiler(source string, tape_size i64, translate bool, mode string) []s
 						ch_counter = 0
 					}
 					'[' {
-						result << 'while (tape[counter] != 0) {'
+						if code[pc + 1] == '-' && code[pc + 2] == ']' {
+							result << 'tape[counter] = 0;'
+							pc += 2
+						} else {
+							result << 'while (tape[counter] != 0) {'
+						}
 					}
 					']' {
 						result << '}'
@@ -196,11 +202,7 @@ pub fn transpiler(source string, tape_size i64, translate bool, mode string) []s
 						result << 'tape[counter] = getchar();'
 					}
 					'.' {
-						if translate {
-							result << 'putchar(tape[counter]);'
-						} else {
-							result << 'printf(tape[counter]);'
-						}
+						result << 'putchar(tape[counter]);'
 					}
 					'EOF' {
 						break
@@ -214,7 +216,7 @@ pub fn transpiler(source string, tape_size i64, translate bool, mode string) []s
 			result << '}'
 		}
 		else {
-		  panic("Unknown backend!")
+			panic('Unknown backend!')
 		}
 	}
 

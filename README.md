@@ -4,6 +4,18 @@ This is a fast Compiler / Transpiler power by V.
 This Compiler have the optimize by default in the frontend // > v0.0.2
 
 # Mandel benchmark
+## v0.0.4 (C backend)
+| Speed (S) | Flags                                  |
+|-----------|----------------------------------------|
+| 1.451     | -b c -i test/mandel.bf                 |
+| 0.607     | -b c -O -i test/mandel.bf              |
+
+## v0.0.4 (V backend)
+| Speed (S) | Flags                   |
+|-----------|-------------------------|
+| 4.104     | -i test/mandel.bf       |
+| 0.615     | -O -i test/mandel.bf    |
+
 ## v0.0.3 (C backend)
 | Speed (S) | Flags                                  |
 |-----------|----------------------------------------|
