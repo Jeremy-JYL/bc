@@ -68,7 +68,7 @@ Options:
 flowchart LR;
   UI["User Interface"]
   FR["Front End (Transpiler)"]
-  BA["Back End (V Compiler)"]
+  BA["Back End (Compiler)"]
 
   UI --> FR;
   FR --> BA;
